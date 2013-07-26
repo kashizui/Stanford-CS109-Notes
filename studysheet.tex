@@ -1,0 +1,365 @@
+\documentclass[12pt]{article}
+\usepackage[intlimits]{amsmath}
+\usepackage{MnSymbol}
+%\usepackage{fullpage}
+\usepackage[top=0.8in, bottom=0.8in, left=0.8in, right=0.8in]{geometry}
+\usepackage{multicol}
+\usepackage{wrapfig}
+
+\newcommand{\Sp}{\text{ }}
+\newcommand{\Cov}{\text{Cov}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\Bin}{\text{Bin}}
+\newcommand{\Poi}{\text{Poi}}
+\newcommand{\HypG}{\text{HypG}}
+\newcommand{\Geo}{\text{Geo}}
+\newcommand{\Exp}{\text{Exp}}
+\newcommand{\Norm}{\text{N}}
+\newcommand{\Where}{\Sp\text{ where }}
+
+\setlength{\columnsep}{0.1pc}
+
+\title{CS 109 Study Notes}
+\author{Stephen Koo}
+
+\begin{document}
+\maketitle
+\vspace{-0.3in}
+\rule{\linewidth}{0.4pt}
+
+\section{Fundamentals}
+\subsection{DeMorgan's Laws}
+\begin{align*}
+    &\left( \bigcup_{i=1}^n E_i \right)^c = \bigcap_{i=1}^n E_i^c &\left( \bigcap_{i=1}^n E_i \right)^c = \bigcup_{i=1}^n E_i^c
+\end{align*}
+\subsection{Axioms of Probability}
+\emph{Axiom 1}: $0 \leq P(E) \leq 1$ \\
+\emph{Axiom 2}: $P(S) = 1$ \\
+\emph{Axiom 3}: For any sequence of mutually exclusive events $E_1, E_2, \ldots$
+\[
+    P\left( \bigcup_{i=1}^{\infty} E_i \right) = \sum_{i=1}^{\infty} P(E_i)
+\]
+\subsection{Inclusion-Exclusion Identity}
+\[
+    P(E \cup F) = P(E) + P(F) - P(EF)
+\]
+\[
+    P\left( \bigcup_{i=1}^{n} E_i \right) = \sum_{r=1}^n (-1)^{(r+1)} \sum_{i_1 < \ldots < i_r} P(E_{i_1}, E_{i_2}, \ldots, E_{i_r})
+\]
+\subsection{Number of Integer Solutions of Equations}
+There are $\binom{n-1}{r-1}$ distinct positive integer-valued vectors $(x_1, x_2, \ldots, x_r)$ satisfying the equation
+\begin{align*}
+    &x_1 + x_2 + \cdots + x_r = n &x_i > 0, i = 1, \ldots, r
+\end{align*}
+There are $\binom{n+r-1}{r-1}$ distince nonnegative integer-valued vectors $(x_1, x_2, \ldots, x_r)$ satisfying the equation
+\[
+    x_1 + x_2 + \cdots + x_r = n
+\]
+
+\section{Conditional Probability}
+\[
+    P(E|F) = \frac{P(EF)}{P(F)} \Leftrightarrow P(EF) = P(E|F)P(F)
+\]
+\subsection{Generalized Chain Rule}
+\[
+    P(E_1 E_2 \ldots E_n) = P(E_1)P(E_2|E_1)P(E_3|E_1 E_2)\ldots P(E_n|E_1 E_2 \ldots E_{n-1})
+\]
+\subsection{Bayes' Theorem}
+The many shapes and forms of Bayes' Theorem...
+\[
+    P(E) = P(E|F)P(F) + P(E|F^c)P(F^c)
+\]
+\[
+    P(F|E) = \frac{P(EF)}{P(E)} = \frac{P(E|F)P(F)}{P(E)}
+\]
+\[
+    P(F|E) = \frac{P(E|F)P(F)}{P(E|F)P(F) + P(E|F^c)P(F^c)}
+\]
+\emph{Fully General Form}:\\
+If $F_1, F_2, \ldots, F_n$ comprise a set of mutually exclusive and exhaustive events, then
+\[
+    P(F_j|E) = \frac{P(E|F_j)P(F_j)}{\sum_{i=1}^n P(E|F_i)P(F_i)}
+\]
+\emph{That's odd.} \\
+The odds of $H$ given observed evidence $E$:
+\[
+    \frac{P(H|E)}{P(H^c|E)} = \frac{P(H)P(E|H)}{P(H^c)P(E|H^c)}
+\]
+
+\section{Independence}
+\subsection{Definition}
+Two events are independent if $P(EF) = P(E)P(F)$. Otherwise they are dependent. \\
+More generally, events $E_1, E_2, \ldots, E_n$ are independent if for every subset $E_{1'}, E_{2'}, \ldots, E_r$ where $r \leq n$ it holds that
+\[
+    P(E_{1'} E_{2'} \ldots E_r) = P(E_{1'})P(E_{2'})\cdots P(E_r)
+\]
+\subsection{Conditional Independence}
+Two events $E$ and $F$ are conditional independent given $G$ if 
+\[
+    P(EF|G) = P(E|G)P(F|G)
+\]
+Dependent events can become independent, and vice-versa, by conditioning on additional information.
+
+\section{Random Distributions}
+\subsection{Definitions and Properties}
+\emph{Probability Mass Function}:
+\[
+    p(a) = P(X=a)
+\]
+\emph{Probability Density Function}:
+\begin{align*}
+    &P(a \leq X \leq b) = \int_{a}^{b} f(x) dx &P(-\infty < X < \infty) = \int_{-\infty}^{\infty} f(x) dx = 1
+\end{align*}
+\emph{Cumulative Distribution Function}:
+\[
+    F(a) = F(X \leq a) \text{ where } -\infty < a \infty
+\]
+\begin{align*}
+    &F(a) = \sum_{\text{all } x\leq a} p(x) &F(a) = \int_{-\infty}^a f(x) dx
+\end{align*}
+Density $f$ is the derivative of CDF $F$: $f(a) = \frac{d}{da} F(a)$
+
+\subsection{Joint distributions}
+\emph{Joint Probability Mass Function}:
+\[
+    p_{X,Y}(a,b) = P(X=a,Y=b)
+\]
+Marginal distributions:
+\begin{align*}
+    &p_X(a) = P(X=a)= \sum_y p_{X,Y} (a, y) &p_Y(b) = P(Y=b)= \sum_x p_{X,Y} (x, b)
+\end{align*}
+\emph{Joint Cumulative Probability Distribution (CDF)}:
+\[
+    F_{X,Y}(a,b) = F(a,b) = P(X \leq a, Y \leq b) \text{ where } -\infty < a,b < \infty
+\]
+Marginal distributions:
+\begin{align*}
+    F_X(a) = P(X \leq a) = P(X \leq a, Y < \infty) = F_{X,Y}(a,\infty) \\
+    F_Y(b) = P(Y \leq b) = P(X < \infty, Y \leq b) = F_{X,Y}(\infty, b)
+\end{align*}
+\emph{Joint Probability Density Function}:
+\[
+    P(a_1 < X \leq a_2, b_1 < Y \leq b_2) = \int_{a_1}^{a_2} \int_{b_1}^{b_2} f_{X,Y}(x,y) dy dx
+\]
+\begin{align*}
+    &F_{X,Y}(a,b) = \int_{-\infty}^a \int_{-\infty}^b f_{X,Y}(x,y) dy dx &f_{X,Y}(a,b) = \frac{\partial^2}{\partial a \partial b} F_{X,Y} (a,b)
+\end{align*}
+Marginal density functions:
+\begin{align*}
+    &f_x(a) = \int_{-\infty}^{\infty} f_{X,Y}(a,y)dy 
+    &f_y(b) = \int_{-\infty}^{\infty} f_{X,Y}(x,b)dx
+\end{align*}
+\subsection{Independent Random Variables}
+$n$ random variables $X_1, X_2, \ldots, X_n$ are called independent if
+\[
+    P(X_1 = x_1, X_2 = x_2, \ldots, X_n = x_n) = \prod_{i=1}^n P(X_i = x_i) \text{ for all } x_1, x_2, \ldots, x_n
+\]
+or analogously for continuous random variables if
+\[
+    P(X_1 \leq a_1, X_2 \leq a_2, \ldots, X_n \leq a_n) = \prod_{i=1}^n P(X_i \leq a_i) \text{ for all } a_1, a_2, \ldots, a_n
+\]
+\subsection{Convolution}
+Let $X$ and $Y$ be independent random variables. The convolution of $F_X$ and $F_Y$ is $F_{X+Y}$:
+\[
+    F_{X+Y}(a) = P(X+Y \leq a) = \int_{y=-\infty}^{\infty} F_X (a-y)f_Y(y)dy
+\]
+\[
+    f_{X+Y}(a) = \int_{y=-\infty}^{\infty} f_X (a-y)f_Y(y)dy
+\]
+In discrete case, replace $\int_{y=-\infty}^{\infty}$ with $\sum_{y}$, and $f(y)$ with $p(y)$.
+\subsection{Conditional Distributions}
+\emph{Conditional PMF of $X$ given $Y$}:
+\[
+    p_{X|Y}(x|y) = P(X=x|Y=y) = \frac{p_{X,Y}(x,y)}{p_Y(y)}
+\]
+\emph{Conditional PDF of $X$ given $Y$}:
+\[
+    f_{X|Y}(x|y) = \frac{f_{X,Y}(x,y)}{f_Y(y)}
+\]
+\emph{Conditional CDF of $X$ given $Y$}:
+\begin{align*}
+    F_{X|Y}(a|y) = P(X \leq a, Y=y) &= \sum_{x\leq a} p_{X|Y}(x|y) \\
+                                    &=\int_{-\infty}^{a} f_{X|Y} (x|y) dx
+\end{align*}
+$n$ random variables $X_1, X_2, \ldots, X_n$ are conditionally independent given $Y$ if
+\[
+    P(X_1 = x_1, X_2 = x_2, \ldots, X_n = x_n|Y=y) = \prod_{i=1}^n P(X_i = x_i|Y=y) \text{ for all } x_1, x_2, \ldots, x_n, y
+\]
+or analogously for continuous random variables if
+\[
+    P(X_1 \leq a_1, X_2 \leq a_2, \ldots, X_n \leq a_n|Y=y) = \prod_{i=1}^n P(X_i \leq a_i|Y=y) \text{ for all } a_1, a_2, \ldots, a_n, y
+\]
+It is possible to mix continuous and discrete random variables in conditional distributions. For example let $X$ be a continuous random variable and $N$ be a discrete random variable. Then the conditional PDF of $X$ given $N$ and the conditional PMF of $N$ given $X$ are
+\[
+    f_{X|N}(x|n) = \frac{p_{N|X}(n|x)f_X(x)}{p_N(n)}
+\]
+\[
+    P_{N|X}(n|x) = \frac{f_{X|N}(x|n)p_N(n)}{f_X(x)}
+\]
+
+\section{Expectation}
+\subsection{Definitions}
+The expected value for a discrete random variable $X$ is defined as
+\[
+    E[X] = \sum_{x: p(x) > 0} x p(x)
+\]
+For a continuous random variable $X$, the expected value is
+\[
+    E[X] = \int_{-\infty}^{\infty} x f(x) dx
+\]
+\subsection{Properties}
+If $I$ is an indicator variable for the event $A$, then
+\[
+    E[I] = P(A)
+\]
+Let $g(X)$ be a real-valued function of $X$.
+\begin{align*}
+    &E[g(X)] = \sum_{i} g(x_i)p(x_i) &E[g(X)] = \int_{-\infty}^{\infty} g(x) f(x) dx
+\end{align*}
+Let $g(X,Y)$ be a real-valued function of two random variables.
+\begin{align*}
+    &E[g(X,Y)] = \sum_y \sum_x g(x,y) p_{X,Y}(x,y)  &E[g(X,Y)] = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} g(x,y) f_{X,Y}(x,y) dx dy
+\end{align*}
+Linearity:
+\[
+    E[aX + b]  = aE[X] + b
+\]
+$N$-th Moment of $X$:
+\[
+    E[X^n] = \sum_{x: p(x) > 0} x^n p(x)
+\]
+Expected Values of Sums:
+\[
+    E\left[ \sum_{i=1}^n X_i \right] = \sum_{i=1}^n E[X_i]
+\]
+Bounding Expectation:\\
+If random variable $X \geq a$ then $E[X] \geq a$. \\
+If $P(a \leq X < \infty) = 1$ then $a \leq E[X] < \infty$. \\
+If random variables $X \geq Y$ then $E[X] \geq E[Y]$.
+
+\subsection{Conditional Expectation}
+Conditional Expectation of $X$ given $Y=y$:
+\begin{align*}
+    &E[X|Y=y] = \sum_x x p_{X|Y}(x|y)   &E[X|Y=y] = \int_{\infty}^{-\infty} x f_{X|Y} (x|y) dx
+\end{align*}
+Expectation of conditional sum:
+\[
+    E\left[ \sum_{i=1}^n X_i | Y=y \right] = \sum_{i=1}^n E[X_i | Y=y]
+\]
+Expectation of conditional expectations:
+\[
+    E[E[X|Y]] = E[X]
+\]
+
+
+\section{Variance}
+\subsection{Definition}
+If $X$ is a random variable with mean $\mu$ then the variance of $X$, denoted $\Var(X)$, is:
+\[
+    \Var(X) = E[(X-\mu)^2] = E[X^2] - (E[X])^2
+\]
+\subsection{Properties}
+\[
+    \Var(aX + b) = a^2\Var(X)
+\]
+If $X_1, X_2, \ldots, X_n$ are independent random variables, then
+\[
+    \Var\left( \sum_{i=1}^n X_i \right) = \sum_{i=1}^n \Var(X_i)
+\]
+\subsection{Covariance}
+\[
+    \Cov(X,Y) = E[(X-E[X])(Y-E[Y])] = E[XY] - E[X]E[Y]
+\]
+If $X$ and $Y$ are independent, $\Cov(X,Y) = 0$
+\emph{Properties}:
+\begin{align*}
+    \Cov(X,Y) &= \Cov(Y,X) \\
+    \Cov(X,X) &= \Var(X) \\
+    \Cov(aX+b, Y) = a\Cov(X,Y)
+\end{align*}
+If $X_1, X_2, \ldots, X_n$ and $Y_1, Y_2, \ldots, Y_m$ are random variables, then
+\[
+    \Cov\left( \sum_{i=1}^n X_i, \sum_{j=1}^m Y_j \right) = \sum_{i=1}^n \sum_{j=1}^m \Cov(X_i, X_j)
+\]
+\subsection{Correlation}
+\[
+    \rho(X,Y) = \frac{\Cov(X,Y)}{\sqrt{\Var(X)\Var(Y)}}
+\]
+Note: $-1 \leq \rho(X,Y) \leq 1$. \\
+Correlation measures linearity between $X$ and $Y$.\\
+If $\rho(X,Y) = 0$, $X$ and $Y$ are uncorrelated.
+
+\section{Moment Generating Functions}
+\subsection{Definition}
+Moment Generating Function (MGF) of a random variable $X$, where $-\infty < t < \infty$, is
+\[
+    M(t) = E[e^{tX}]
+\]
+\begin{align*}
+    &\text{When $X$ is discrete: }      &= \sum_x e^{tx} p(x) \\
+    &\text{When $X$ is continuous: }    &= \int_{-\infty}^{\infty} e^{tx} f(x) dx
+\end{align*}
+For any $n$ random variables $X_1, X_2, \ldots, X_n$
+\[
+    M(t_1, t_2, \ldots, t_n) = E[e^{t_1X_1+t_2X_2+\cdots+t_nX_n}]
+\]
+The individual moment generating function is obtained:
+\[
+    M_{X_i}(t) = E[e^{tX}] = M(0, \ldots, 0, t, 0, \ldots, 0) \text{ where $t$ at $i$th place}
+\]
+\subsection{Properties}
+\[
+    M^n(t) = \left( \frac{d^n}{dt^n} \right) M(t) = E[X^n e^{nX}]
+\]
+\[
+    M^n(0) = E[X^n]
+\]
+\[
+    M_X(t) = M_Y(t) \text{ iff } X \sim Y
+\]
+$X_1, X_2, \ldots, X_n$ independent if and only if:
+\[
+    M(t_1, t_2, \ldots, t_n) = M_{X_1}(t_1)M_{X_2}(t_2)\ldots M_{X_n}(t_n)
+\]
+
+\section{Inequalities}
+\subsection{Boole's Inequality}
+Let $E_1, E_2, \ldots, E_n$ be events with indicator random variables $X_i$.
+\[
+    \sum_{i=1}^n P(E_i) \geq P\left( \bigcup_{i=1}^n E_i \right)
+\]
+\subsection{Markov's Inequality}
+$X$ is a nonnegative random variable.
+\[
+    P(X \geq a) \leq \frac{E[X]}{a} \text{ for all } a > 0
+\]
+\subsection{Chebyshev's Inequality}
+$X$ is a random variable with $E[X] = \mu$ and $\Var(X) = \sigma^2$.
+\[
+    P(|X-\mu| \geq k) \leq \frac{\sigma^2}{k^2} \text{ for all } k > 0
+\]
+\emph{One-sided inequality}:
+\[
+    P(X \geq E[X] + a) \leq \frac{\sigma^2}{\sigma^2 + a^2} \text{ for any } a  > 0
+\]
+\[
+    P(X \leq E[X] - a) \leq \frac{\sigma^2}{\sigma^2 + a^2} \text{ for any } a  > 0
+\]
+\subsection{Chernoff Bound}
+$X$ is a random variable with MGF $M(t)$.
+\[
+    P(X \geq a) \leq e^{-ta} M(t) \text{ for all } t > 0 
+\]
+\[
+    P(X \leq a) \leq e^{-ta} M(t) \text{ for all } t < 0 
+\]
+In practice, use the $t$ that minimizes $e^{-ta} M(t)$. 
+ 
+\subsection{Jensen's Inequality}
+If $f(x)$ is a convex function ($f''(x) \geq 0$ for all $x$) then
+\[
+    E[f(x)] \geq f(E[X])
+\]
+
+\end{document}
+

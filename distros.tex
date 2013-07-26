@@ -1,0 +1,186 @@
+\documentclass[12pt]{article}
+\usepackage[intlimits]{amsmath}
+\usepackage{MnSymbol}
+%\usepackage{fullpage}
+\usepackage[top=1in, bottom=1in, left=0.8in, right=1in]{geometry}
+\usepackage{multicol}
+\usepackage{wrapfig}
+
+\newcommand{\Sp}{\text{ }}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\Bin}{\text{Bin}}
+\newcommand{\Poi}{\text{Poi}}
+\newcommand{\HypG}{\text{HypG}}
+\newcommand{\Geo}{\text{Geo}}
+\newcommand{\Exp}{\text{Exp}}
+\newcommand{\Norm}{\text{N}}
+\newcommand{\Where}{\Sp\text{ where }}
+
+\setlength{\columnsep}{0.1pc}
+
+\title{Random Variables}
+\author{Stephen Koo}
+
+\begin{document}
+\maketitle
+\vspace{-0.3in}
+\rule{\linewidth}{0.4pt}
+
+\section{Discrete Random Variables}
+\subsection{Bernoulli}
+An experiment that results in "success" or "failure."
+\begin{align*}
+    X& \sim \text{Ber}(p) \\
+    P(X = 0)& = 1 - p \\
+    P(X = 1)& = p \\
+        E[X]& = p \\
+     \Var(X)& = p(1-p) \\
+        M(t)& = e^t p + 1 - p
+\end{align*}
+
+\subsection{Binomial}
+The number of successes in an experiment with $n$ trials and $p$ probability of success on each trial.
+\begin{align*}
+    X& \sim \Bin(n,p) \\
+    P(X = i) = p(i)& = \binom{n}{i} p^i (1-p)^{n-i} \Where i = 0,1,\ldots, n\\
+               E[X]& = np \\
+            \Var(X)& = np(1-p) \\
+               M(t)& = (pe^t + 1 - p)^n
+\end{align*}
+\\
+If $X_i \sim \Bin(n_i, p)$ for $1 \leq i \leq N$, then
+\[
+    \left( \sum_{i=1}^N X_i \right) \sim \Bin\left(\sum_{i=1}^N n_i, p \right)
+\]
+
+\subsection{Poisson}
+Approximates the binomial random variable when $n$ is large and $p$ is small enough to make $np$ "moderate"---generally when $n > 20$ and $p < 0.05$.
+\begin{align*}
+    X& \sim \Poi(\lambda) \Where \lambda = np \\
+    P(X = i)& = e^{-\lambda} \frac{\lambda^i}{i!} \Where i = 0,1,2,\ldots\\
+        E[X]& = \lambda \\
+     \Var(X)& = \lambda \\
+        M(t)& = e^{\lambda (e^t - 1)}
+\end{align*}
+The approximations also works to a certain extent when the successes in the trials are not entirely independent, and when the probability of success in each trial varies slightly. \\
+\\
+If $X_i \sim \Poi(\lambda_i)$ for $1 \leq i \leq N$, then
+\[
+    \left( \sum_{i=1}^N X_i \right) \sim \Poi\left(\sum_{i=1}^N \lambda_i \right)
+\]
+
+\subsection{Geometric}
+The number of independent trials until a success, where the probability of success is $p$.
+\begin{align*}
+    X& \sim \Geo(p) \\
+    P(X = n)& = (1-p)^{n-1} p \Where n = 1, 2, \ldots\\
+        E[X]& = 1/p \\
+     \Var(X)& = (1-p)/p^2
+\end{align*}
+
+\subsection{Negative Binomial}
+The number of independent trials until $r$ successes, with probability $p$ of success.
+\begin{align*}
+    X& \sim \text{NegBin}(r, p) \\
+    P(X = n)& = \binom{n-1}{r-1} p^r (1-p)^{n-r} \Where n = r, r+1, \ldots \\
+        E[X]& = r / p \\
+     \Var(x)& = r(1-p)/p^2 \\
+     \Geo(p)& \sim \text{NegBin}(1, p)
+\end{align*}
+
+\subsection{Hypergeometric}
+The number of white balls drawn after drawing $n$ balls (without replacement) from an urn containing $N$ balls, with $m$ white balls and $N-m$ other ("black") balls.
+\begin{align*}
+    X& \sim \HypG(n,N,m) \\
+    P(X = i)& = \frac{\binom{m}{i} \binom{N-m}{n-i}}{\binom{N}{n}} \Where i = 0, 1, \ldots, n \\
+        E[X]& = n(m/N) \\
+     \Var(X)& = \frac{nm(N-n)(N-m)}{N^2(N-1)} \\
+\HypG(n,N,m)& \rightarrow Bin(n, m/N) \text{ , as } N \rightarrow \infty \text{ and } m/N \text{ stays constant}
+\end{align*}
+
+\subsection{Multinomial}
+Given an experiment with $n$ independent trials, where each trial results in one of $m$ outcomes, with respective probabilities $p_1, p_2, \ldots, p_m$ such that $\sum_{i=1}^{m} p_i = 1$, then if $X_i$ denotes the number of trials with outcome $i$ we have
+$$P(X_1 = c_1, X_2 = c_2, \ldots, X_m = c_m) = \binom{n}{c_1, c_2, \ldots, c_m} p_1^{c_1} p_2^{c_2} \cdots p_m^{c_m}$$
+where $\sum_{i=1}^{m} c_i = n$ and $\binom{n}{c_1, c_2, \ldots, c_m} = \frac{n!}{c_1! c_2! \cdots c_m!}$.
+
+\section{Continuous Random Variables}
+If $Y$ is a non-negative continuous random variable
+$$E[Y] = \int_{0}^{\infty} P(Y > y) dy$$
+\subsection{Uniform}
+\begin{align*}
+    X& \sim \text{Uni}(\alpha, \beta) \\
+ f(x)& = \left\{
+        \begin{array}{ll}
+            \frac{1}{\beta - \alpha} & \alpha \leq x \leq \beta \\
+                                   0 &\text{otherwise}
+        \end{array}
+    \right. \\
+    E[X]& = \frac{\alpha + \beta}{2} \\
+ \Var(X)& = \frac{(\beta - \alpha)^2}{12}
+\end{align*}
+
+\subsection{Normal}
+For values in common natural phenomena, especially when resulting from the sum of multiple variables.
+\begin{align*}
+    X& \sim \Norm(\mu, \sigma^2) \\
+ f(x)& = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}} \Where -\infty < x < \infty \\
+ E[X]& = \mu \\
+    \Var(X)& = \sigma^2 \\
+       M(t)& = e^{\left( \frac{\sigma^2 t^2}{2} + \mu t\right)}
+\end{align*}
+Letting $X \sim N(\mu, \sigma^2)$ and $Y = aX + b$, we have
+\begin{align*}
+    Y& \sim \Norm(a\mu + b, a^2\sigma^2) \\
+     F_Y(x)& = F_X(\frac{x - b}{a})
+\end{align*}
+The Standard (Unit) Normal Random Variable $Z \sim N(0, 1)$ has a cumulative distribution function (CDF) commonly labeled $\Phi(x) = P(Z \leq z)$ that has some useful properties.
+\begin{align*}
+    \Phi(z)& = \int_{-\infty}^{z} \frac{1}{\sqrt{2\pi}} e^{-x^2/2} dx \\
+   \Phi(-z)& = 1 - \Phi(z)\\
+P(Z \geq -z)& = P(Z > z)
+\end{align*}
+Given $X \sim N(\mu, \sigma^2)$ where $\sigma > 0$, we can then compute the CDF of $X$ using the CDF of the standard normal variable.
+$$F_X(x) = \Phi(\frac{x - \mu}{\sigma})$$
+By the de Moivre-Laplace Limit Theorem, the normal variable can approximate the binomial when $\Var(X) = np(1-p) \geq 10$. If we let $S_n$ denote the number of successes (with probability $p$) in $n$ independent trials, then
+$$ P \left( a \leq \frac{S_n - np}{\sqrt{np(1-p)}} \leq  b \right) \overset{n \rightarrow \infty}{\rightarrow} \Phi(b) - \Phi(a)$$
+\\
+If $X_i \sim \Norm(\mu_i, \sigma_i^2)$ for $i = 1, 2, \ldots, n$, then
+\[
+    \left( \sum_{i=1}^n X_i \right) \sim \Norm\left( \sum_{i=1}^n \mu_i, \sum_{i=1}^n \sigma_i^2 \right)
+\]
+
+\subsection{Exponential}
+Represents time until some event, with rate $\lambda > 0$.
+\begin{align*}
+    X& \sim \Exp(\lambda) \\
+ f(x)& = \left\{
+        \begin{array}{ll}
+            \lambda e^{-\lambda x} &\text{if } x \geq 0 \\
+                                 0 &\text{if } x < 0
+        \end{array}
+    \right. \\
+    E[X]& = \frac{1}{\lambda} \\
+ \Var(X)& = \frac{1}{\lambda^2} \\
+    F(x)& = 1 - e^{-\lambda x} \Where x \geq 0
+\end{align*}
+Exponentially distributed random variables are memoryless.
+$$P(X > s + t | X > s) = P(X > t)$$
+
+\subsection{Beta}
+\begin{align*}
+    X& \sim \text{Beta}(a, b) \\
+ f(x)& = \left\{
+        \begin{array}{ll}
+            \frac{1}{B(a,b)}x^{a-1}(1-x)^{b-1} &0 < x < 1 \\
+                                             0 &\text{otherwise}
+        \end{array}
+    \right. \\
+    B(a,b)& = \int_{0}^{1} x^{a-1} (1-x)^{b-1} dx \\
+      E[X]& = \frac{a}{a+b} \\
+   \Var(X)& = \frac{ab}{(a+b)^2(a+b+1)}
+\end{align*}
+If $X \sim \text{Uni}(0, 1)$ and $N$ denotes the number of heads resulting from a number of coin flips with some unknown probability of getting heads, then
+$$X|(N = n, m+n \text{ trials}) \sim \text{Beta}(n + 1, m+ 1)$$
+
+\end{document}
+
