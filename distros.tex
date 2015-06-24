@@ -52,9 +52,10 @@ If $X_i \sim \Bin(n_i, p)$ for $1 \leq i \leq N$, then
 \[
     \left( \sum_{i=1}^N X_i \right) \sim \Bin\left(\sum_{i=1}^N n_i, p \right)
 \]
+Note that the binomial distribution is a generalization of the Bernoulli distribution, since $\text{Ber}(p) \sim \Bin(1, p)$.
 
 \subsection{Poisson}
-Approximates the binomial random variable when $n$ is large and $p$ is small enough to make $np$ "moderate"---generally when $n > 20$ and $p < 0.05$.
+Approximates the binomial random variable when $n$ is large and $p$ is small enough to make $np$ "moderate"---generally when $n > 20$ and $p < 0.05$---and approaches the binomial distribution as $n \rightarrow \infty$ and $p \rightarrow 0$.
 \begin{align*}
     X& \sim \Poi(\lambda) \Where \lambda = np \\
     P(X = i)& = e^{-\lambda} \frac{\lambda^i}{i!} \Where i = 0,1,2,\ldots\\
@@ -87,6 +88,7 @@ The number of independent trials until $r$ successes, with probability $p$ of su
      \Var(x)& = r(1-p)/p^2 \\
      \Geo(p)& \sim \text{NegBin}(1, p)
 \end{align*}
+Note that the negative binomial distribution generalizes the geometric distribution, with $\Geo(p) \sim \text{NegBin}(1, p)$.
 
 \subsection{Hypergeometric}
 The number of white balls drawn after drawing $n$ balls (without replacement) from an urn containing $N$ balls, with $m$ white balls and $N-m$ other ("black") balls.
@@ -99,7 +101,7 @@ The number of white balls drawn after drawing $n$ balls (without replacement) fr
 \end{align*}
 
 \subsection{Multinomial}
-Given an experiment with $n$ independent trials, where each trial results in one of $m$ outcomes, with respective probabilities $p_1, p_2, \ldots, p_m$ such that $\sum_{i=1}^{m} p_i = 1$, then if $X_i$ denotes the number of trials with outcome $i$ we have
+The multinomial distribution further generalizes the binomial distribution: given an experiment with $n$ independent trials, where each trial results in one of $m$ outcomes, with respective probabilities $p_1, p_2, \ldots, p_m$ such that $\sum_{i=1}^{m} p_i = 1$, then if $X_i$ denotes the number of trials with outcome $i$ we have
 $$P(X_1 = c_1, X_2 = c_2, \ldots, X_m = c_m) = \binom{n}{c_1, c_2, \ldots, c_m} p_1^{c_1} p_2^{c_2} \cdots p_m^{c_m}$$
 where $\sum_{i=1}^{m} c_i = n$ and $\binom{n}{c_1, c_2, \ldots, c_m} = \frac{n!}{c_1! c_2! \cdots c_m!}$.
 
@@ -133,7 +135,7 @@ Letting $X \sim N(\mu, \sigma^2)$ and $Y = aX + b$, we have
     Y& \sim \Norm(a\mu + b, a^2\sigma^2) \\
      F_Y(x)& = F_X(\frac{x - b}{a})
 \end{align*}
-The Standard (Unit) Normal Random Variable $Z \sim N(0, 1)$ has a cumulative distribution function (CDF) commonly labeled $\Phi(x) = P(Z \leq z)$ that has some useful properties.
+The Standard (Unit) Normal Random Variable $Z \sim N(0, 1)$ has a cumulative distribution function (CDF) commonly labeled $\Phi(z) = P(Z \leq z)$ that has some useful properties.
 \begin{align*}
     \Phi(z)& = \int_{-\infty}^{z} \frac{1}{\sqrt{2\pi}} e^{-x^2/2} dx \\
    \Phi(-z)& = 1 - \Phi(z)\\
